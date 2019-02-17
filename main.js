@@ -1,10 +1,12 @@
 const a = [2,1,8,4,9,6,7,3,5,0];
 
-function mergeSort(input) {
-    function merge(left, right) {
+const mergeSort = (input) => {
+    const merge = (left, right) => {
+
         let result = [];
         let indexLeft = 0;
         let indexRight = 0;
+
         while (indexLeft < left.length && indexRight < right.length) {
             if (left[indexLeft] < right[indexRight]) {
                 result.push(left[indexLeft]);
@@ -14,11 +16,14 @@ function mergeSort(input) {
                 indexRight++;
             }
         }
+
         if (indexRight < right.length) {
             result = result.concat(right.slice(indexRight));
+            
         } else if (indexLeft < left.length) {
             result = result.concat(left.slice(indexLeft));
-        }      
+        }   
+
         return result;
     }
   
