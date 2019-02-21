@@ -24,7 +24,7 @@ const merge = (left, right) => {
     }   
 
     return result;
-}
+};
 
 const mergeSort = (input) => {
  
@@ -36,6 +36,6 @@ const mergeSort = (input) => {
     const m1 = mergeSort(input.slice(0, half));
     const m2 = mergeSort(input.slice(half));
     return merge(m1, m2);
-}
+};
 
 console.log(mergeSort(a));
