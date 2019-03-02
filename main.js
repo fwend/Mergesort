@@ -1,41 +1,53 @@
 const a = [2,1,8,4,9,6,7,3,5,0];
 
-const merge = (left, right) => {
+const merge = (input, scratch, indexLeft, indexRight, upperBound) => {
 
-    let result = [];
-    let indexLeft = 0;
-    let indexRight = 0;
+    let i = 0;
+    let lowerBound = indexLeft;
+    const mid = indexRight - 1;
+    const len = upperBound - lowerBound + 1;
 
-    while (indexLeft < left.length && indexRight < right.length) {
-        if (left[indexLeft] < right[indexRight]) {
-            result.push(left[indexLeft]);
-            indexLeft++;
+    while (indexLeft <= mid && indexRight <= upperBound) {
+
+        if (input[indexLeft] < input[indexRight]) {
+            scratch[i++] = input[indexLeft++];
+
         } else {
-            result.push(right[indexRight]);
-            indexRight++;
+            scratch[i++] = input[indexRight++];
         }
     }
 
-    if (indexRight < right.length) {
-        result = result.concat(right.slice(indexRight));
-        
-    } else if (indexLeft < left.length) {
-        result = result.concat(left.slice(indexLeft));
-    }   
+    while (indexLeft <= mid) {
+        scratch[i++] = input[indexLeft++];
+    }
 
-    return result;
+    while (indexRight <= upperBound) {
+        scratch[i++] = input[indexRight++];
+    }
+
+    for (i = 0; i < len; i++) {
+        input[lowerBound + i] = scratch[i];
+    }
 };
 
-const mergeSort = (input) => {
- 
-    if (input.length < 2) {
-        return input;
+const mergeSortR = (input, scratch, lower, upper) => {
+
+    if (lower === upper) {
+        return;
     }
   
-    const half = Math.ceil(input.length / 2);
-    const m1 = mergeSort(input.slice(0, half));
-    const m2 = mergeSort(input.slice(half));
-    return merge(m1, m2);
+    const mid = Math.floor((lower + upper) / 2);
+
+    mergeSortR(input, scratch, lower, mid);
+    mergeSortR(input, scratch, mid + 1, upper);
+
+    merge(input, scratch, lower, mid + 1, upper);
 };
 
-console.log(mergeSort(a));
+const mergeSort = (input) => {  
+    const scratch = Array(input.length);
+    mergeSortR(input, scratch, 0, input.length - 1);
+};
+
+mergeSort(a);
+console.log(a);
